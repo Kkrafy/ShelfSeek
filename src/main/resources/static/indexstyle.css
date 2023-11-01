@@ -1,0 +1,45 @@
+.menu_div{
+    position:fixed;
+    top: 0%;
+    left: 0%;
+
+}
+
+.menu_button{
+   font-size: 30px;
+   background-color: black;
+   color:white;
+   font-family: monospace;
+   border: 2px solid #FC5E3D;
+   border-radius: 5px;
+}
+
+#h1{
+    top: 5%;
+    position: absolute;
+    font-family: monospace;
+}
+#explicacao{
+    top:40%;
+    position: absolute;
+    font-size: 18px;
+}
+#iniciocaixa_div{
+    position:absolute;
+    top:8%;
+    left:0%;
+    color:white;
+    height: 100px;
+    width: 600px;
+    background-color: #FC5E3D;
+    
+}
+
+#bookdiv{
+    display:none;
+    position:absolute;
+    background-color: grey;
+    height: 300px;
+    top: 10%;    
+    width: 200px;
+}

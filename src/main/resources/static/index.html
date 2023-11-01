@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Biblioteca Federal Da Ilha Central</title>
+        <meta charset="ISO-8859-1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="indexstyle.css" rel="stylesheet"/>
+    </head>
+    <body>
+        
+        <script src="indexapimanager.js"></script>
+        
+        <div class ="menu_div">
+            <button class="menu_button" id="inicio_button">Inicio</button>
+            <button class="menu_button" id="consultar_button">Consultar acervo</button>
+            <button class="menu_button" id="eventos_button">Eventos</button>
+            <button class="menu_button" id="sobre_button">Sobre</button>
+            <button class="menu_button" id="contato_button">Contato</button>
+        </div>
+        
+        <div id="iniciocaixa_div">
+        <h1 id="h1">Biblioteca Federal Da Ilha Central</h1>   
+        <p id="explicacao">A biblioteca mais tecnologica do estado esta no bairro academicos!</p>
+        </div>
+        <br>
+        <br>
+        <div style="display:none" id="consultar_form">
+            <h1 style="font-family: monospace;" >Consultar</h1>
+            <input id="bookname"> 
+            <input value="Procurar" type="submit" onclick="requestBook()">
+        </div>
+                   
+        <h1 style="font-family: monospace; display:none" >Resultados:</h1>
+        
+        <div id="bookdiv">  <!-- Clonada pelo indexapimanager.js pra cada livro encontrado --> 
+            
+        </div>
+        <script src="indexbehavior.js"></script>
+    </body>
+</html>
