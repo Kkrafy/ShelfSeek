@@ -1,6 +1,7 @@
+
 //Ajax
 var bookjson;
-
+var quantidade_livros_carregados = 0;
 
 async function requestBook(){
    const nome =  document.getElementById("bookname").value
@@ -10,7 +11,7 @@ async function requestBook(){
    console.log("URL = busca-acervo?nomedolivro=" + nome)
    const promise = await fetch("busca-acervo?nomedolivro=" + nome)
    bookjson = await promise.json()
-   addBooks(bookjson)
+   bookjson.livros.forEach(addBooks)
 }
 
 
@@ -25,6 +26,9 @@ function addBooks(bookjson){
     div.appendChild(nomeparagrafo)
     div.appendChild(sinopseparagrafo)
     div.style.display = "block"
+    quantidade_livros_carregados += 1
+    const constante = 100 - 25 * quantidade_livros_carregados
+    div.style.right = constante.toString() + "%"
     document.body.appendChild(div)
     console.log(bookjson.nome)
     console.log(bookjson.sinopse)

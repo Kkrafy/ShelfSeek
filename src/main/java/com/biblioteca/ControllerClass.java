@@ -6,6 +6,7 @@ import com.biblioteca.data.BookSearchEngine;
 import com.biblioteca.data.entities.Book;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import java.util.Optional;
 import org.apache.logging.log4j.Logger;
@@ -40,21 +41,38 @@ public class ControllerClass {
         logger = LogManager.getLogger();
     }
     
+    public String jsonGenerator(List<Book> lista){
+        String jsonfinal = "{\"livros\":[";
+        int currentindex = -1;
+        for(Book b:lista){
+            jsonfinal += "{\"nome\":\""+ b.getNome() + "\", \"sinopse\":\"" + b.getSinopse() + "\"}";
+            currentindex+= 1;
+            if(currentindex != lista.size() - 1){
+                jsonfinal += ",";
+            }
+        }
+        jsonfinal += "]}";
+        logger.info(jsonfinal);
+        return jsonfinal;
+    }
     /**
+     * Recebe uma solicitação ajax e instancia a
      * 
-     * @return 
      */
     @GetMapping("/busca-acervo")
     public void buscaAcervo(HttpServletRequest request, HttpServletResponse response){
         String nomedolivro = request.getParameter("nomedolivro");
         BookSearchEngine booksearchengine = new BookSearchEngine(nomedolivro,arquivoRepository);
-        Optional<Book> optionalbook = booksearchengine.Search();
+        Optional<List<Book>> optionalbook = booksearchengine.Search();
         if (optionalbook.isPresent()){
-            Book book = optionalbook.get();
-            logger.info("Optionalbook is present");
-            logger.debug("{\"nome\":\""+ book.getNome() +"\",\"sinopse\":\"" + book.getSinopse() + "\"}");
-            try{
-            response.getWriter().write("{\"nome\":\""+ book.getNome() +"\",\"sinopse\":\"" + book.getSinopse() + "\"}");
+            List<Book> booklista = optionalbook.get();
+            logger.info("Optionalbook/s is/are present");
+           // logger.debug("{\"nome\":\""+ book.getNome() +"\",\"sinopse\":\"" + book.getSinopse() + "\"}");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");  
+            String json = jsonGenerator(booklista);
+            try{          
+            response.getWriter().write(json);
             }catch(Exception e){
                 
             }

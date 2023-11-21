@@ -25,14 +25,14 @@ public class BookSearchEngineTest {
     @BeforeEach
     public void beforeall(){
         booksearchengine = new BookSearchEngine("O Pequeno Principe",arquivoRepository);
-    }
-    public void StringFormatTest(){
-        
+        System.out.println("before each");
     }
     @Test
-    public void SearchTestTrue(){
-        Optional<Book> book = booksearchengine.Search();
-        assert book.isPresent() == true;
-        
+    public void SearchTest(){
+        System.out.println("books found:");
+        System.out.println(booksearchengine.Search().isPresent());
+        for(Book b:booksearchengine.Search().get()){
+            System.out.println(b.getNome());
+        }
     }
 }
