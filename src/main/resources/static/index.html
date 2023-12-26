@@ -17,7 +17,6 @@
             <button class="menu_button" id="sobre_button">Sobre</button>
             <button class="menu_button" id="contato_button">Contato</button>
         </div>
-        
         <div id="iniciocaixa_div">
         <h1 id="h1">Biblioteca Federal Da Ilha Central</h1>   
         <p id="explicacao">A biblioteca mais tecnológica do estado esta no bairro academicos!</p>
@@ -30,10 +29,10 @@
             <input value="Procurar" type="submit" onclick="requestBook()">
         </div>
                    
-        <h1 style="font-family: monospace; display:none" >Resultados:</h1>
+        <h1 id="resultados" >Resultados:</h1>
         
         <div id="bookdiv">  <!-- Clonada pelo indexapimanager.js pra cada livro encontrado --> 
-            
+            <image id="bookimage">
         </div>
         <script src="indexbehavior.js"></script>
     </body>

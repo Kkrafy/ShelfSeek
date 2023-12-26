@@ -3,9 +3,12 @@ package com.biblioteca;
 
 import com.biblioteca.data.ArquivoRepository;
 import com.biblioteca.data.BookSearchEngine;
+import com.biblioteca.data.CoverService;
 import com.biblioteca.data.entities.Book;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import java.util.Optional;
@@ -45,7 +48,7 @@ public class ControllerClass {
         String jsonfinal = "{\"livros\":[";
         int currentindex = -1;
         for(Book b:lista){
-            jsonfinal += "{\"nome\":\""+ b.getNome() + "\", \"sinopse\":\"" + b.getSinopse() + "\"}";
+            jsonfinal += "{\"isbn\":\""+b.getIsbn()+"\",\"nome\":\""+ b.getNome() + "\", \"sinopse\":\"" + b.getSinopse() + "\"}";
             currentindex+= 1;
             if(currentindex != lista.size() - 1){
                 jsonfinal += ",";
@@ -81,4 +84,25 @@ public class ControllerClass {
         logger.info("Optionalbook is NOT present");
         }
     }
+    
+    @GetMapping("/findcover")
+    public void findCoverByISBN(HttpServletRequest request,HttpServletResponse response){
+        CoverService coverservice = new CoverService();
+        String requested_isbn = request.getParameter("isbn");
+        byte[] cover = coverservice.findCover(requested_isbn);
+        logger.debug(requested_isbn);
+       /* for(byte b:cover){
+            System.out.print(b);    
+            System.out.print(" ");
+        }*/
+        response.setContentType("image/jpg");
+        OutputStream stream;
+        try{
+            stream = response.getOutputStream();
+            stream.write(cover);
+        }
+        catch(IOException e){logger.error("IOException no output stream de achar capa");}
+        
+    }
+    
 }

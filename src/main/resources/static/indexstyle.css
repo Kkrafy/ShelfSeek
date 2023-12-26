@@ -1,3 +1,8 @@
+body{
+    height:500px;
+}
+
+
 .menu_div{
     position:fixed;
     top: 0%;
@@ -24,9 +29,18 @@
     position: absolute;
     font-size: 18px;
 }
+#resultados{
+    font-family: monospace;
+    display: none;
+    font-size: xxx-large;
+    left: 6px;
+    position: relative;
+    font-weight: lighter;    
+}
 #iniciocaixa_div{
-    position:absolute;
-    top:8%;
+    display:block;
+    position:relative;
+    top:80px;
     left:0%;
     color:white;
     height: 100px;
@@ -37,9 +51,16 @@
 
 #bookdiv{
     display:none;
-    position:absolute;
+    position:relative;
     background-color: grey;
-    height: 300px;
-    top: 10%;    
-    width: 200px;
+    height: 224px;
+    border-style: solid;
+    margin:6px;
+    top:8px;
+    width: 502px;
+}
+#bookimage{
+    display:none;
+    position:relative;
+    height: 224px;
 }

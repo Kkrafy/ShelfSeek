@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Book {
     @Id
-    private int id;
+    private Long isbn;
     
     String nome;
     String sinopse;
@@ -30,5 +30,8 @@ public class Book {
 
     public void setSinopse(String sinopse) {
         this.sinopse = sinopse;
+    }
+    public String getIsbn(){
+        return isbn.toString() ;
     }
 }
