@@ -1,12 +1,44 @@
+//Made by Kkraft
+
 
 //Ajax
 var bookjson;
 var quantidade_livros_carregados = 0;
 
+var firstexecution = true
+var finalstring = ""
+var spacebefore = false
+function formatString(char){
+
+    if(firstexecution){
+        finalstring += char.toUpperCase()
+        firstexecution = false
+        return "continue dont work on function .-"
+    }
+    
+    if(spacebefore){
+        finalstring += char.toUpperCase()
+        spacebefore = false
+        return "continue dont work on function .-"
+    }
+    
+    if(char == " "){
+        spacebefore = true
+        finalstring += char
+        return "continue dont work on function .-"
+    }
+    
+    finalstring += char // Se nenhum if disparar
+}
+
 async function requestBook(){
-   const nome =  document.getElementById("bookname").value
+   var nome =  document.getElementById("bookname").value
    console.log(nome)
-   nome.replace(" ", "+")
+   const nomesplitted = Array.from(nome);
+   arraylength = nomesplitted.length
+   nomesplitted.forEach(formatString)
+   nome = finalstring
+   console.log(nome)
    document.getElementById("consultar_form").style.display = "none"
    console.log("URL = busca-acervo?nomedolivro=" + nome)
    const promisedbinfo = await fetch("busca-acervo?nomedolivro=" + nome)

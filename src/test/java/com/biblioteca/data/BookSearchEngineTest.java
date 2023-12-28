@@ -32,7 +32,7 @@ public class BookSearchEngineTest {
         System.out.println("books found:");
         System.out.println(booksearchengine.Search().isPresent());
         for(Book b:booksearchengine.Search().get()){
-            System.out.println(b.getNome());
+            System.out.println(b.getTitulo());
         }
     }
 }

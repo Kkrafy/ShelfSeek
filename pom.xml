@@ -6,6 +6,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     <modelVersion>4.0.0</modelVersion>
     <groupId>com</groupId>
     <artifactId>biblioteca</artifactId>
+    <packaging>jar</packaging>    
     
     <parent>
 		<groupId>org.springframework.boot</groupId>

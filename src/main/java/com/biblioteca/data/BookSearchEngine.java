@@ -30,11 +30,11 @@ public class BookSearchEngine {
         Iterable<Book> allbooks = arquivoRepository.findAll();
         List<Book> livros = new ArrayList<Book>();
         for(Book b:allbooks){
-            if(b.getNome().equals(nomedolivroraw)){
+            if(b.getTitulo().equals(nomedolivroraw)){
                 livros.add(0, b);
                 continue;
             }
-            String bnomeseparado[] = b.getNome().split(" ");
+            String bnomeseparado[] = b.getTitulo().split(" ");
             for(String bnome:bnomeseparado){
                 for(String nome:nomedolivroseparado){
                     if (nome.length() > 2 & bnome.length() > 2 & nome.equals(bnome)){

@@ -13,15 +13,15 @@ public class Book {
     @Id
     private Long isbn;
     
-    String nome;
+    String titulo;
     String sinopse;
 
-    public String getNome() {
-        return nome;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNome(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getSinopse() {
