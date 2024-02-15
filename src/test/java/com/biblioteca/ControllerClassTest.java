@@ -33,7 +33,7 @@ public class ControllerClassTest {
     }*/
     
    // @Test
-    public void jsonGeneratorTest(){
+    /*public void jsonGeneratorTest(){
         List<Book> lista = new ArrayList<Book>();
         Book livroteste1 = new Book();
         Book livroteste2 = new Book();
@@ -44,5 +44,5 @@ public class ControllerClassTest {
         lista.add(livroteste1);
         lista.add(livroteste2);
         controllerclass.jsonGenerator(lista);
-    }
+    }*/
 }

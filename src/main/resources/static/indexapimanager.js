@@ -43,31 +43,55 @@ async function requestBook(){
    console.log("URL = busca-acervo?nomedolivro=" + nome)
    const promisedbinfo = await fetch("busca-acervo?nomedolivro=" + nome)
    bookjson = await promisedbinfo.json()
-   bookjson.livros.forEach(addBooks)
+   bookjson.livros_e_autores.forEach(addBooks)
 }
 
 
 function addBooks(bookjson){
-    const div = document.getElementById("bookdiv").cloneNode(true)
-    const nomeparagrafo = document.createElement("p")   
-    const sinopseparagrafo = document.createElement("p")
-    document.getElementById("resultados").style.display = "block";
-    nomeparagrafo.style.display = "inline-block";
-    nomeparagrafo.style.position = "absolute";    
-    nomeparagrafo.style.color = "white"
-    sinopseparagrafo.style.display = "inline-block";
-    sinopseparagrafo.style.position = "absolute";        
-    sinopseparagrafo.style.color = "white"
-    sinopseparagrafo.style.top = "30px";
-    sinopseparagrafo.style.width = "350px";    
-    nomeparagrafo.innerHTML = bookjson.nome
-    sinopseparagrafo.innerHTML = bookjson.sinopse
-    div.appendChild(nomeparagrafo)
-    div.appendChild(sinopseparagrafo)
-    div.style.display = "inline-block"
-    div.querySelector("#bookimage").setAttribute("src","/findcover?isbn=" + bookjson.isbn)
-    div.querySelector("#bookimage").style.display = "inline-block";
-    document.body.appendChild(div)
-    console.log(bookjson.nome)
-    console.log(bookjson.sinopse)
+    if(bookjson.livro_ou_autor === "livro"){
+        const div = document.getElementById("bookdiv").cloneNode(true)
+        const nomeparagrafo = document.createElement("p")   
+        const sinopseparagrafo = document.createElement("p")
+        const autorlink = document.createElement("a")    
+        document.getElementById("resultados").style.display = "block"
+        nomeparagrafo.style.display = "inline-block"
+        nomeparagrafo.style.position = "absolute"   
+        nomeparagrafo.style.color = "white"
+        sinopseparagrafo.style.display = "inline-block"
+        sinopseparagrafo.style.position = "absolute"      
+        sinopseparagrafo.style.color = "white"
+        sinopseparagrafo.style.top = "30px";
+        sinopseparagrafo.style.width = "350px";   
+        autorlink.style.position = "relative"
+        autorlink.style.bottom = "4px"
+        nomeparagrafo.innerHTML = bookjson.nome
+        sinopseparagrafo.innerHTML = bookjson.sinopse 
+        autorlink.innerHTML = bookjson.autor
+        autorlink.setAttribute("href","/autor?autor=" + bookjson.autor)
+        div.appendChild(nomeparagrafo)
+        div.appendChild(sinopseparagrafo)
+        div.appendChild(autorlink)
+        div.style.display = "inline-block"
+        div.querySelector("#bookimage").setAttribute("src","/findcover?isbn=" + bookjson.isbn)
+        div.querySelector("#bookimage").style.display = "inline-block";
+        document.body.appendChild(div)
+        console.log(bookjson.nome)
+        console.log(bookjson.sinopse)
+    }else{
+        const div = document.getElementById("autordiv").cloneNode(true)  
+        div.style.display = "inline-block"        
+        document.getElementById("resultados").style.display = "block"        
+        const autorlink = document.createElement("a")
+        const autorparagrafo = document.createElement("p")
+        autorlink.innerHTML = bookjson.nome
+        autorlink.setAttribute("href","/autor?autor="+ bookjson.id )
+        autorlink.style.position = "relative"
+        autorlink.style.top = "10px"
+        autorlink.style["font-size"] = "xx-large"
+        autorparagrafo.style["font-size"] = "x-large"
+        autorparagrafo.innerHTML = "Autor"
+        div.appendChild(autorlink)
+        div.appendChild(autorparagrafo)
+        document.body.appendChild(div)
+    }  
 } 

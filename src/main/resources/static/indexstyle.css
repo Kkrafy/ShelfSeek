@@ -49,7 +49,7 @@ body{
     
 }
 
-#bookdiv{
+.acervodiv{
     display:none;
     position:relative;
     background-color: grey;

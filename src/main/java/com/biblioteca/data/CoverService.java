@@ -22,19 +22,22 @@ public class CoverService {
     }
     public byte[] findCover(String ISBN){
        FileInputStream stream;
-       byte[] coverimage = new byte[81920];
+       /**o limite de tamanho das capas é 600kb    
+        * 
+        */   
+       byte[] coverimage = new byte[600000];
        
        try{stream = new FileInputStream("/home/kkraft/Documents/BibliotecaCapas/" + ISBN + ".jpg" );}
        catch(FileNotFoundException e){log.debug("file not found"); return new byte[1];}
           
        
        try{
-           log.debug(coverimage[81919]);
+           log.debug(coverimage[599999]);
            int teste = 0;
            while(teste != -1){
                 teste += stream.read(coverimage,teste,coverimage.length - 1 - teste);
            }    
-           System.out.println(teste);
+           //System.out.println(teste);
        }
        catch(IOException e){
             log.debug("Erro lendo a fileinputstream do coverservice"); 

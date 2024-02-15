@@ -3,6 +3,7 @@ package com.biblioteca.data.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 /**
  *
@@ -15,6 +16,18 @@ public class Book {
     
     String titulo;
     String sinopse;
+    
+    //@Transient
+    //public byte prioridade;
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+    String autor;
 
     public String getTitulo() {
         return titulo;
