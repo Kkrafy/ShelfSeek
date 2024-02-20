@@ -49,10 +49,27 @@ body{
     
 }
 
+#bookname{
+    border-radius: 4px;
+    border-block-style: double;height: 25px;
+    width: 200px;position: relative;
+}
+
+#Procurar{
+    position: relative;
+    top: 20px;
+    background-color: white;
+    border-style: outset;
+    border-radius: 10px;
+    border-width: thick;
+    border-color: aquamarine;
+    font-family: monospace;
+}
+
 .acervodiv{
     display:none;
     position:relative;
-    background-color: grey;
+    background-color: darkgray;
     height: 224px;
     border-style: solid;
     margin:6px;

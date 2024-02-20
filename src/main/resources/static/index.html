@@ -10,23 +10,13 @@
         
         <script src="indexapimanager.js"></script>
         
-        <div class ="menu_div">
-            <button class="menu_button" id="inicio_button">Inicio</button>
-            <button class="menu_button" id="consultar_button">Consultar acervo</button>
-            <button class="menu_button" id="eventos_button">Eventos</button>
-            <button class="menu_button" id="sobre_button">Sobre</button>
-            <button class="menu_button" id="contato_button">Contato</button>
-        </div>
-        <div id="iniciocaixa_div">
-        <h1 id="h1">Biblioteca Federal Da Ilha Central</h1>   
-        <p id="explicacao">A biblioteca mais tecnológica do estado esta no bairro academicos!</p>
-        </div>
-        <br>
-        <br>
-        <div style="display:none" id="consultar_form">
-            <h1 style="font-family: monospace;" >Consultar</h1>
-            <input id="bookname"> 
-            <input value="Procurar" type="submit" onclick="requestBook()">
+        <a href="/" style="font-size: xx-large;color: darkblue;">ShelfSeek</a>        
+      
+        <div id="consultar_form">
+            <p style="font-family: monospace;font-size: xx-large;position: relative;">Consulta de acervo</p>
+            <input id="bookname" placeholder="Insira Livro,Autor,ISBN ou Sinopse"> 
+            <br>
+            <input id="Procurar" value="Procurar" type="submit" onclick="requestBook()">
         </div>
                    
         <h1 id="resultados" >Resultados:</h1>

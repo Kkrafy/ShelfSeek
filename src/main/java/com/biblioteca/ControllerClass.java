@@ -116,16 +116,8 @@ public class ControllerClass {
 "    </head>\n" +
 "    <body>\n" +
 "        \n" +
-"        <div class =\"menu_div\">\n" +
-"            <button class=\"menu_button\" id=\"inicio_button\">Inicio</button>\n" +
-"            <button class=\"menu_button\" id=\"consultar_button\">Consultar acervo</button>\n" +
-"            <button class=\"menu_button\" id=\"eventos_button\">Eventos</button>\n" +
-"            <button class=\"menu_button\" id=\"sobre_button\">Sobre</button>\n" +
-"            <button class=\"menu_button\" id=\"contato_button\">Contato</button>\n" +
-"        </div>\n" +
-"        <h1 style=\"position:relative;top:40px;font-family:monospace;font-weight:lighter;font-size: xxx-large;\">Livros de "+autor+":</h1>\n" +
-"        <br>\n" +
-"        <br>\n" +
+"         <a href=\"/\" style=\"font-size: xx-large;color: darkblue;\">ShelfSeek</a>\n" +
+"        <h1 style=\"position:relative;font-family:monospace;font-weight:lighter;font-size: xxx-large;\">Livros de "+autor+":</h1>\n" +
 "         <div class = \"acervodiv\" id=\"bookdiv\">  <!-- Clonada para cada livro encontrado --> \n" +
 "            <image id=\"bookimage\">\n" +
 "        </div>           \n" +
@@ -138,7 +130,6 @@ public class ControllerClass {
         + "window.location.assign(\"/\")"
         + "}"
         + "var bookjson ="+jsonfinal+"\n" +
-         "document.getElementById(\"inicio_button\").addEventListener(\"click\",inicioredirect);"+
 "    \n" +
 "\n" +
 "        bookjson.livros.forEach(addBooks)\n" +
