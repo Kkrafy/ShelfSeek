@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  * to aqui javadoc
  */
 public class BookSearchEngine {
@@ -29,7 +29,7 @@ public class BookSearchEngine {
         this.autorRepository = autorRepository;
     }
     
-    //TODO:Duas palavras iguais ter prioridade e organizar livros por quantidadde de espaços
+    //TODO:organizar livros por quantidadde de espaços
     public Optional<SearchResult> tituloSearch(String nomedolivro){
         
         SearchResult sr = new SearchResult();
@@ -40,23 +40,47 @@ public class BookSearchEngine {
         Iterable<Book> allbooks = arquivoRepository.findAll();
         Iterable<Autor> todosautores = autorRepository.findAll();
         for(Book b:allbooks){
+            //System.out.println(b.getTitulo());
+            String bnomefinal = "";
+            
             if(b.getTitulo().equals(nomedolivroraw)){
+                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
                 sr.classificar(b, 5);
+                b.titulo_bolded = "||bold||" + b.getTitulo() + "||bold||";
                 continue;
             }
             String bnomeseparado[] = b.getTitulo().split(" ");
             byte palavrasiguais = 0;
+            byte currentloop = 0;
             for(String bnome:bnomeseparado){
                 for(String nome:nomedolivroseparado){
                     if (nome.length() > 2 & bnome.length() > 2 & nome.equals(bnome)){
+                        bnomeseparado[currentloop] = "||bold||" +bnome + "||bold||"; // ||bold|| é interpretado pelo indexapimanager.js como <strong>
                         palavrasiguais++;
                         continue;
                     }
                 }
+                currentloop++;
             }
+            
+            boolean debounce = true;
+            for(String s:bnomeseparado){
+                if(!debounce){
+                    bnomefinal += " " + s;
+                }else{
+                    bnomefinal = s;
+                    debounce = false;
+                }
+            }
+            b.titulo_bolded = bnomefinal;
+            
             if(palavrasiguais == 1){
+                System.out.println(b.titulo_bolded);
+                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));
                 sr.classificar(b,2);
             }else if(palavrasiguais >= 2){
+                System.out.println(b.titulo_bolded);    
+                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
                 sr.classificar(b,3);
             }
         }
@@ -69,6 +93,7 @@ public class BookSearchEngine {
             String nome_usual = autornomeseparado[1] + " " + autornomeseparado[0];
             
             if(nome_usual.equals(nomedolivroraw)){
+                v_autor.setNome_bolded("||bold||" + v_autor.getNome() + "||bold||");
                 sr.classificar(v_autor, 5);
                 continue;
             }
@@ -87,20 +112,41 @@ public class BookSearchEngine {
                     }
                     
                     if(loop == 1 & sobrenomeseparado.length > 1){
+                        byte vsbsloop = -1;
                         for(String vsbs:sobrenomeseparado){
-                            if(vsbs.length() > 2 & vsbs.equals(nome)){
+                            vsbsloop++;
+                            if(vsbs.length() > 1 & vsbs.equals(nome)){
+                                sobrenomeseparado[vsbsloop] = "||bold||" + sobrenomeseparado[vsbsloop] + "||bold||";
                                 partesobrenome_contido = true;
                             }
                         }
                     }
                 }
             }
+            String autornomepartesobrenomebolded = "";
             if(sobrenome_contido & primeiro_nome_contido){
+                 v_autor.setNome_bolded("||bold||"+v_autor.getNome()+"||bold||");                
                  sr.classificar(v_autor, 4);
             }else if(sobrenome_contido){
+                v_autor.setNome_bolded("||bold||" + autornomeseparado[0] + "||bold||," + autornomeseparado[1]);                
                 sr.classificar(v_autor, 3);
-            }else if(partesobrenome_contido || primeiro_nome_contido){
-                sr.classificar(v_autor, 2);                
+            }else if(primeiro_nome_contido){
+                System.out.println("primeironomecontido");
+                v_autor.setNome_bolded(autornomeseparado[0] + ",||bold||" + autornomeseparado[1] + "||bold||" );
+                sr.classificar(v_autor, 2);                   
+            }else if(partesobrenome_contido){
+                boolean debounce = true;
+                for(String s:sobrenomeseparado){
+                    if(!debounce){
+                        autornomepartesobrenomebolded += " " + s;
+                    }else{
+                        autornomepartesobrenomebolded = s;
+                        debounce = false;
+                    }
+                }
+                autornomepartesobrenomebolded += "," + autornomeseparado[1];
+                v_autor.setNome_bolded(autornomepartesobrenomebolded);
+                sr.classificar(v_autor, 2);                   
             }
         }
         
@@ -114,6 +160,7 @@ public class BookSearchEngine {
     public List<Book> autorSearch(String autor){
         List<Book> listafinal = new ArrayList<Book>();
         for(Book b:arquivoRepository.findByAutor(autor)){
+            b.setAutor_nome(autorRepository.getNomeAutorById(autor));
             listafinal.add(b);
         }
         return listafinal;

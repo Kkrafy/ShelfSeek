@@ -11,10 +11,11 @@ import java.util.List;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  */
 
 //TODO:Fazer livros com autor que tem nome na pesquisa terem prioridade
+//TODO mudar encoding do database
 public class SearchResult {
     
     public boolean autor_registrado = false;
@@ -37,10 +38,10 @@ public class SearchResult {
     String jsonfinal = "{\"livros_e_autores\":[";
     
    public void addLivroToJSON(Book b){
-        jsonfinal += "{\"livro_ou_autor\":\"livro\",\"isbn\":\""+b.getIsbn()+"\",\"nome\":\""+ b.getTitulo() + "\", \"sinopse\":\"" + b.getSinopse() + "\",\"autor\":\"" + b.getAutor()+ "\"}";
+        jsonfinal += "{\"livro_ou_autor\":\"livro\",\"isbn\":\""+b.getIsbn()+"\",\"nome\":\""+ b.titulo_bolded + "\", \"sinopse\":\"" + b.getSinopse() + "\",\"autor\":\"" + b.getAutor_nome()+ "\",\"autorid\":\""+b.getAutor()+"\"}";
    }    
    public void addAutorToJSON(Autor a){
-        jsonfinal += "{\"livro_ou_autor\":\"autor\",\"nome\":\""+ a.getNome() + "\",\"id\":\"" + a.getId() + "\"}";
+        jsonfinal += "{\"livro_ou_autor\":\"autor\",\"nome\":\""+ a.getNome_bolded()+ "\",\"id\":\"" + a.getId() + "\"}";
     }  
     
    byte nao_vazios = 0;   

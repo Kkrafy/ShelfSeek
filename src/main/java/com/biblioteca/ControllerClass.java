@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.biblioteca.data.repository.*;
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  * Serve como controller do projeto
  */
 
@@ -64,7 +64,7 @@ public class ControllerClass {
             logger.info("SearchResult is present");
            // logger.debug("{\"nome\":\""+ book.getNome() +"\",\"sinopse\":\"" + book.getSinopse() + "\"}");
             response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");  
+            response.setCharacterEncoding("UTF-8");  
             String json = sr.getJSON();
             try{          
             response.getWriter().write(json);
@@ -106,6 +106,7 @@ public class ControllerClass {
         List<Book> lista = b_engine.autorSearch(autorid);
         String jsonfinal = JsonTools.bookListToJson(lista);
         try {
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().write("<!DOCTYPE html>\n" +
 "<html>\n" +
 "    <head>\n" +
@@ -153,7 +154,7 @@ public class ControllerClass {
 "            nomeparagrafo.innerHTML = bookjson.nome\n" +
 "            sinopseparagrafo.innerHTML = bookjson.sinopse\n" +
 "            autorlink.innerHTML = bookjson.autor\n" +
-"            autorlink.setAttribute(\"href\",\"/autor?autor=\" + bookjson.autor)\n" +
+"            autorlink.setAttribute(\"href\",\"/autor?autor=\" + bookjson.autorid)\n" +
 "            div.appendChild(nomeparagrafo)\n" +
 "            div.appendChild(sinopseparagrafo)\n" +
 "            div.appendChild(autorlink)\n" +

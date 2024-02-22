@@ -7,7 +7,7 @@ import jakarta.persistence.Transient;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  */
 @Entity
 public class Book {
@@ -16,9 +16,21 @@ public class Book {
     
     String titulo;
     String sinopse;
+
+    public String getAutor_nome() {
+        return autor_nome;
+    }
+
+    public void setAutor_nome(String autor_nome) {
+        this.autor_nome = autor_nome;
+    }
+    String autor;    
     
-    //@Transient
-    //public byte prioridade;
+    @Transient
+    public String titulo_bolded;
+    
+    @Transient
+    public String autor_nome;
 
     public String getAutor() {
         return autor;
@@ -27,7 +39,6 @@ public class Book {
     public void setAutor(String autor) {
         this.autor = autor;
     }
-    String autor;
 
     public String getTitulo() {
         return titulo;

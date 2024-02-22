@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  */
 public class CoverService {
   

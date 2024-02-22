@@ -9,14 +9,14 @@ import java.util.List;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  */
 public class JsonTools {
        public static String bookListToJson(List<Book> lista){
         String jsonfinal = "{\"livros\":[";
         int currentindex = -1;
         for(Book b:lista){
-            jsonfinal += "{\"isbn\":\""+b.getIsbn()+"\",\"nome\":\""+ b.getTitulo() + "\", \"sinopse\":\"" + b.getSinopse() + "\",\"autor\":\"" + b.getAutor()+ "\"}";
+            jsonfinal += "{\"isbn\":\""+b.getIsbn()+"\",\"nome\":\""+ b.getTitulo() + "\", \"sinopse\":\"" + b.getSinopse() + "\",\"autor\":\"" + b.getAutor_nome()+"\",\"autorid\":\""+ b.getAutor() + "\"}";
             currentindex+= 1;
             if(currentindex != lista.size() - 1){
                 jsonfinal += ",";

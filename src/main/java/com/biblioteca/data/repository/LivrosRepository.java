@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  */
 @Repository
 public interface LivrosRepository extends CrudRepository<Book,Integer > {

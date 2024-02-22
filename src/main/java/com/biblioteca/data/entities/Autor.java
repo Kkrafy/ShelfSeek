@@ -10,21 +10,30 @@ import jakarta.persistence.Transient;
 
 /**
  *
- * @author kkraft
+ * @author Mateus Rocha(Kkrafy)
  */
 @Entity
 public class Autor {
     @Id
     private int id;
     
-    //@Transient
-    // public byte prioridade;
+    private String nome;    
+    
+    @Transient
+    private String nome_bolded;
+
+    public String getNome_bolded() {
+        return nome_bolded;
+    }
+
+    public void setNome_bolded(String nome_bolded) {
+        this.nome_bolded = nome_bolded;
+    }
 
     public int getId() {
         return id;
     }
     
-    private String nome;
     
     public String getNome() {
         return nome;
