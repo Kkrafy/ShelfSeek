@@ -39,53 +39,9 @@ public class BookSearchEngine {
         
         Iterable<Book> allbooks = arquivoRepository.findAll();
         Iterable<Autor> todosautores = autorRepository.findAll();
-        for(Book b:allbooks){
-            //System.out.println(b.getTitulo());
-            String bnomefinal = "";
-            
-            if(b.getTitulo().equals(nomedolivroraw)){
-                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
-                sr.classificar(b, 5);
-                b.titulo_bolded = "||bold||" + b.getTitulo() + "||bold||";
-                continue;
-            }
-            String bnomeseparado[] = b.getTitulo().split(" ");
-            byte palavrasiguais = 0;
-            byte currentloop = 0;
-            for(String bnome:bnomeseparado){
-                for(String nome:nomedolivroseparado){
-                    if (nome.length() > 2 & bnome.length() > 2 & nome.equals(bnome)){
-                        bnomeseparado[currentloop] = "||bold||" +bnome + "||bold||"; // ||bold|| é interpretado pelo indexapimanager.js como <strong>
-                        palavrasiguais++;
-                        continue;
-                    }
-                }
-                currentloop++;
-            }
-            
-            boolean debounce = true;
-            for(String s:bnomeseparado){
-                if(!debounce){
-                    bnomefinal += " " + s;
-                }else{
-                    bnomefinal = s;
-                    debounce = false;
-                }
-            }
-            b.titulo_bolded = bnomefinal;
-            
-            if(palavrasiguais == 1){
-                System.out.println(b.titulo_bolded);
-                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));
-                sr.classificar(b,2);
-            }else if(palavrasiguais >= 2){
-                System.out.println(b.titulo_bolded);    
-                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
-                sr.classificar(b,3);
-            }
-        }
         
         
+                
         for(Autor v_autor:todosautores){
             
             String[] autornomeseparado = v_autor.getNome().split(",");
@@ -149,6 +105,55 @@ public class BookSearchEngine {
                 sr.classificar(v_autor, 2);                   
             }
         }
+        
+        
+        for(Book b:allbooks){
+            //System.out.println(b.getTitulo());
+            String bnomefinal = "";
+            
+            if(b.getTitulo().equals(nomedolivroraw)){
+                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
+                sr.classificar(b, 5);
+                b.titulo_bolded = "||bold||" + b.getTitulo() + "||bold||";
+                continue;
+            }
+            String bnomeseparado[] = b.getTitulo().split(" ");
+            byte palavrasiguais = 0;
+            byte currentloop = 0;
+            for(String bnome:bnomeseparado){
+                for(String nome:nomedolivroseparado){
+                    if (nome.length() > 2 & bnome.length() > 2 & nome.equals(bnome)){
+                        bnomeseparado[currentloop] = "||bold||" +bnome + "||bold||"; // ||bold|| é interpretado pelo indexapimanager.js como <strong>
+                        palavrasiguais++;
+                        continue;
+                    }
+                }
+                currentloop++;
+            }
+            
+            boolean debounce = true;
+            for(String s:bnomeseparado){
+                if(!debounce){
+                    bnomefinal += " " + s;
+                }else{
+                    bnomefinal = s;
+                    debounce = false;
+                }
+            }
+            b.titulo_bolded = bnomefinal;
+            
+            if(palavrasiguais == 1){
+                System.out.println(b.titulo_bolded);
+                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));
+                sr.classificar(b,2);
+            }else if(palavrasiguais >= 2){
+                System.out.println(b.titulo_bolded);    
+                b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
+                sr.classificar(b,3);
+            }
+        }
+        
+
         
         if(sr.livro_registrado || sr.autor_registrado){
             return Optional.of(sr);

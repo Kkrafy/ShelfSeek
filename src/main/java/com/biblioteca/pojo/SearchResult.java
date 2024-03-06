@@ -8,6 +8,7 @@ import com.biblioteca.data.entities.Autor;
 import com.biblioteca.data.entities.Book;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -26,6 +27,9 @@ public class SearchResult {
     List<Book> livros3p = new ArrayList<Book>();
     List<Book> livros4p = new ArrayList<Book>();
     List<Book> livros5p = new ArrayList<Book>();
+    List<Book> livrosespecial1 = new ArrayList<Book>(); 
+    List<Book> livrosespecial2 = new ArrayList<Book>();
+    List<Book> livrosespecial3 = new ArrayList<Book>();           
     List<Autor> autores1p = new ArrayList<Autor>();
     List<Autor> autores2p = new ArrayList<Autor>();
     List<Autor> autores3p = new ArrayList<Autor>();
@@ -58,6 +62,9 @@ public class SearchResult {
        isEmpty(livros3p);
        isEmpty(livros4p);
        isEmpty(livros5p);
+       isEmpty(livrosespecial1);
+       isEmpty(livrosespecial2);
+       isEmpty(livrosespecial3);       
        isEmpty(autores5p);
        isEmpty(autores4p);   
        isEmpty(autores3p);   
@@ -90,7 +97,34 @@ public class SearchResult {
          }
    }
    
+   List<Autor> autores = new ArrayList<Autor>();
+   Optional<Autor> findAutor(String id){
+       for(Autor a:autores){
+           if(a.getId().equals(id)){
+               return Optional.of(a);
+           }
+       }
+       return Optional.empty();
+   }
+   
+   int getPrioridadeComposta(Book b, int prioridade){
+       Optional<Autor> optautordob = findAutor(b.getAutor());
+       if(!optautordob.isEmpty()){
+           Autor autordob = optautordob.get();
+           b.setAutor_nome(autordob.getNome_bolded());
+           return prioridade + autordob.getPrioridade() - 1;
+       }else{
+           return prioridade;
+       }
+       
+   }
    public void parseLists(){
+       for(Book b:livrosespecial3){ addLivroToJSON(b);virgulaPlacer(livrosespecial2, livrosespecial3);}       
+       livrosespecial3.clear();
+       for(Book b:livrosespecial2){addLivroToJSON(b);virgulaPlacer(livrosespecial1, livrosespecial2);}      
+       livrosespecial2.clear();       
+       for(Book b:livrosespecial1){addLivroToJSON(b);virgulaPlacer(livros5p, livrosespecial1);}   
+       livrosespecial1.clear();       
        for(Book b:livros5p){addLivroToJSON(b);virgulaPlacer(autores5p, livros5p);}
        livros5p.clear();
        for(Autor a:autores5p){addAutorToJSON(a);virgulaPlacer(livros4p, autores5p);}
@@ -129,25 +163,49 @@ public class SearchResult {
     
     public void classificar(Book p,int prioridade){
         livro_registrado = true;
-        if(prioridade == 1){
-            System.out.println("livrop1");            
-            livros1p.add(p);         
-        }else if(prioridade == 2){
-            System.out.println("livrop2");
-            livros2p.add(p);         
-        }else if(prioridade == 3){
-            System.out.println("livrop3");
-            livros3p.add(p);       
-        }else if(prioridade == 4){
-            System.out.println("livrop4");
-            livros4p.add(p);        
-        }else if(prioridade == 5){
-            System.out.println("livrop5");
-            livros5p.add(p);            
+        int prioridadefinal = getPrioridadeComposta(p,prioridade);
+        
+        switch(prioridadefinal){
+            case(1):
+                System.out.println("livrop1");            
+                livros1p.add(p);  
+                break;
+            case(2):
+                System.out.println("livrop2");
+                livros2p.add(p);   
+                break;
+            case(3):
+                System.out.println("livrop3");
+                livros3p.add(p);    
+                break;
+            case(4):
+                System.out.println("livrop4");
+                livros4p.add(p);    
+                break;
+            case(5):
+                System.out.println("livrop5");
+                livros5p.add(p);
+                break;
+            case(6):
+                System.out.println("livroespecial1");
+                livrosespecial1.add(p);  
+                break;
+            case(7):
+                System.out.println("livroespecial2");
+                livrosespecial2.add(p);       
+                break;
+            case(8):
+                System.out.println("livroespecial3");
+                livrosespecial3.add(p);       
+                break;
         }
     }
     public void classificar(Autor p,int prioridade){
         autor_registrado = true;
+        
+        p.setPrioridade(prioridade);
+        autores.add(p);
+        
         if(prioridade == 1){
             System.out.println("autorp1");
             autores1p.add(p);

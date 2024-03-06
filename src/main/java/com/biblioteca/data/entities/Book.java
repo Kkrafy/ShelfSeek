@@ -16,21 +16,22 @@ public class Book {
     
     String titulo;
     String sinopse;
-
+    String autor;      
+    
+    @Transient
+    public String titulo_bolded;
+    
+    @Transient
+    public String autor_nome;    
+    
     public String getAutor_nome() {
         return autor_nome;
     }
 
     public void setAutor_nome(String autor_nome) {
         this.autor_nome = autor_nome;
-    }
-    String autor;    
+    }  
     
-    @Transient
-    public String titulo_bolded;
-    
-    @Transient
-    public String autor_nome;
 
     public String getAutor() {
         return autor;

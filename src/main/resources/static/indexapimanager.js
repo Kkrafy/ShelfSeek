@@ -8,6 +8,31 @@ var quantidade_livros_carregados = 0;
 var firstexecution = true
 var finalstring = ""
 var spacebefore = false
+
+function setInnerHtml(content,element){
+    var nomeargs = content.split("||bold||")
+      if(nomeargs.length > 1){
+        if(nomeargs[0] != ""){
+           element.innerHTML = nomeargs[0]
+        } 
+        var open_bold = true;
+        nomeargs.forEach( (n,i) =>{ //||bold||teste||bold|| batata ||bold||teste2||bold||
+            if(i != 0 & open_bold){
+                console.log(n+" openbold true")
+                element.innerHTML += "<strong>" + n + "</strong>"
+                open_bold = false
+            }else if(!open_bold){
+                console.log(n+" openbold false")                
+                element.innerHTML += n
+                open_bold = true
+            }
+         }) 
+      }else{
+          console.log("nenhum bold")
+          element.innerHTML += content
+        }    
+}
+
 function formatString(char){
 
     if(firstexecution){
@@ -64,27 +89,9 @@ function addBooks(bookjson){
         sinopseparagrafo.style.width = "350px"
         autorlink.style.position = "relative"
         autorlink.style.bottom = "4px"
-        var nomeargs = bookjson.nome.split("||bold||")
-        if(nomeargs.length > 1){
-            if(nomeargs[0] != ""){
-                nomeparagrafo.innerHTML = nomeargs[0]
-            } 
-            var open_bold = true;
-            nomeargs.forEach( (n,i) =>{
-                if(i != 0 & open_bold){
-                    nomeparagrafo.innerHTML += "<strong>" + n + "</strong>"
-                    open_bold = false
-                }else if(!open_bold){
-                    nomeparagrafo.innerHTML += n
-                    openbold = true
-                }
-            }) 
-        }else{
-            console.log("nenhum bold")
-            nomeparagrafo.innerHTML += bookjson.nome
-        }
+        setInnerHtml(bookjson.nome,nomeparagrafo)
         sinopseparagrafo.innerHTML = bookjson.sinopse 
-        autorlink.innerHTML = bookjson.autor
+        setInnerHtml(bookjson.autor,autorlink)
         autorlink.setAttribute("href","/autor?autor=" + bookjson.autorid)
         div.appendChild(nomeparagrafo)
         div.appendChild(sinopseparagrafo)
@@ -102,25 +109,7 @@ function addBooks(bookjson){
         const autornome = document.createElement("p")
         const autorlink = document.createElement("a")
         const autorparagrafo = document.createElement("p")
-        var nomeargs = bookjson.nome.split("||bold||")
-        if(nomeargs.length > 1){
-            if(nomeargs[0] != ""){
-                autornome.innerHTML = nomeargs[0]
-            } 
-            var open_bold = true;
-            nomeargs.forEach( (n,i) =>{
-                if(i != 0 & open_bold){
-                    autornome.innerHTML += "<strong>" + n + "</strong>"
-                    open_bold = false
-                }else if(!open_bold){
-                    autornome.innerHTML += n
-                    openbold = true
-                }
-            }) 
-        }else{
-            console.log("nenhum bold")
-            autornome.innerHTML += bookjson.nome
-        }
+        setInnerHtml(bookjson.nome,autornome)
         autorlink.innerHTML = "Pagina do autor"
         autorlink.setAttribute("href","/autor?autor="+ bookjson.id )
         autornome.style.position = "relative"

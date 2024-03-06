@@ -15,12 +15,17 @@ import jakarta.persistence.Transient;
 @Entity
 public class Autor {
     @Id
-    private int id;
+    private String id;
     
     private String nome;    
+
+
     
     @Transient
     private String nome_bolded;
+    
+    @Transient
+    private int prioridade;
 
     public String getNome_bolded() {
         return nome_bolded;
@@ -30,7 +35,7 @@ public class Autor {
         this.nome_bolded = nome_bolded;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
     
@@ -42,4 +47,11 @@ public class Autor {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    public int getPrioridade() {
+        return prioridade;
+    }
+
+    public void setPrioridade(int prioridade) {
+        this.prioridade = prioridade;
+    }    
 }
