@@ -4,6 +4,7 @@
  */
 package com.biblioteca.data;
 
+import com.shelfseek.model.businesslayer.CoverService;
 import org.junit.jupiter.api.Test;
 
 /**

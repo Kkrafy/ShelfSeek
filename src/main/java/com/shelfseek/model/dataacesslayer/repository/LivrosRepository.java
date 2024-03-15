@@ -1,9 +1,8 @@
 /*
  */
-package com.biblioteca.data.repository;
+package com.shelfseek.model.dataacesslayer.repository;
 
-import com.biblioteca.data.entities.*;
-import java.util.List;
+import com.shelfseek.model.dataacesslayer.entities.Book;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

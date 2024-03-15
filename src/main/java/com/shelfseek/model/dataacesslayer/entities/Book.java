@@ -1,5 +1,5 @@
 
-package com.biblioteca.data.entities;
+package com.shelfseek.model.dataacesslayer.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

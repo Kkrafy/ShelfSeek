@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.biblioteca.pojo;
+package com.shelfseek.model.businesslayer;
 
-import com.biblioteca.data.entities.Book;
+import com.shelfseek.model.dataacesslayer.entities.Book;
 import java.util.List;
 
 /**

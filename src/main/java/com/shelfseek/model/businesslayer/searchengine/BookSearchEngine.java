@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.biblioteca.data;
+package com.shelfseek.model.businesslayer.searchengine;
 
-import com.biblioteca.data.repository.LivrosRepository;
-import com.biblioteca.data.entities.Autor;
-import com.biblioteca.data.entities.Book;
-import com.biblioteca.data.repository.AutorRepository;
-import com.biblioteca.pojo.SearchResult;
+import com.shelfseek.model.dataacesslayer.repository.LivrosRepository;
+import com.shelfseek.model.dataacesslayer.entities.Autor;
+import com.shelfseek.model.dataacesslayer.entities.Book;
+import com.shelfseek.model.dataacesslayer.repository.AutorRepository;
+import com.shelfseek.model.businesslayer.searchengine.SearchResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

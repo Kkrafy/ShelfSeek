@@ -4,9 +4,9 @@
  */
 package com.biblioteca.data;
 
-import com.biblioteca.data.repository.LivrosRepository;
-import com.biblioteca.ControllerClass;
-import com.biblioteca.data.entities.Book;
+import com.shelfseek.model.dataacesslayer.repository.LivrosRepository;
+import com.shelfseek.ControllerClass;
+import com.shelfseek.model.dataacesslayer.entities.Book;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

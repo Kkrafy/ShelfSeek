@@ -1,11 +1,13 @@
 
-package com.biblioteca;
+package com.shelfseek;
 
-import com.biblioteca.data.BookSearchEngine;
-import com.biblioteca.data.CoverService;
-import com.biblioteca.data.entities.Book;
-import com.biblioteca.pojo.JsonTools;
-import com.biblioteca.pojo.SearchResult;
+import com.shelfseek.model.dataacesslayer.repository.LivrosRepository;
+import com.shelfseek.model.dataacesslayer.repository.AutorRepository;
+import com.shelfseek.model.businesslayer.searchengine.BookSearchEngine;
+import com.shelfseek.model.businesslayer.CoverService;
+import com.shelfseek.model.dataacesslayer.entities.Book;
+import com.shelfseek.model.businesslayer.JsonTools;
+import com.shelfseek.model.businesslayer.searchengine.SearchResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,13 +17,13 @@ import org.apache.logging.log4j.LogManager;
 import java.util.Optional;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.biblioteca.data.repository.*;
 /**
  *
  * @author Mateus Rocha(Kkrafy)
@@ -30,12 +32,13 @@ import com.biblioteca.data.repository.*;
 
 @EnableAutoConfiguration
 @Controller
-@ComponentScan(basePackages = "com.biblioteca.data")
-@EntityScan(basePackages = "com.biblioteca.data.entities")
+@ComponentScan(basePackages = "com.shelfseek.model")
+@EntityScan(basePackages = "com.shelfseek.model.dataacesslayer.entities")
 
 public class ControllerClass {
     Logger logger;
     @Autowired
+    //@Qualifier("LivrosRepository")
     public LivrosRepository arquivoRepository;
     
     @Autowired
