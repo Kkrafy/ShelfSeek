@@ -57,16 +57,16 @@ function formatString(char){
 }
 
 async function requestBook(){
-   var nome =  document.getElementById("bookname").value
-   console.log(nome)
-   const nomesplitted = Array.from(nome);
+   var prompt = document.getElementById("bookname").value
+   console.log(prompt)
+   const nomesplitted = Array.from(prompt);
    arraylength = nomesplitted.length
    nomesplitted.forEach(formatString)
-   nome = finalstring
-   console.log(nome)
+   prompt = finalstring
+   console.log(prompt)
    document.getElementById("consultar_form").style.display = "none"
-   console.log("URL = busca-acervo?nomedolivro=" + nome)
-   const promisedbinfo = await fetch("busca-acervo?nomedolivro=" + nome)
+   console.log("URL = busca-acervo?prompt=" + prompt)
+   const promisedbinfo = await fetch("busca-acervo?prompt=" + prompt)
    bookjson = await promisedbinfo.json()
    bookjson.livros_e_autores.forEach(addBooks)
 }
@@ -90,7 +90,7 @@ function addBooks(bookjson){
         autorlink.style.position = "relative"
         autorlink.style.bottom = "4px"
         setInnerHtml(bookjson.nome,nomeparagrafo)
-        sinopseparagrafo.innerHTML = bookjson.sinopse 
+        setInnerHtml(bookjson.sinopse,sinopseparagrafo)
         setInnerHtml(bookjson.autor,autorlink)
         autorlink.setAttribute("href","/autor?autor=" + bookjson.autorid)
         div.appendChild(nomeparagrafo)

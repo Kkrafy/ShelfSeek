@@ -59,9 +59,9 @@ public class ControllerClass {
      */
     @GetMapping("/busca-acervo")
     public void buscaAcervo(HttpServletRequest request, HttpServletResponse response){
-        String nomedolivro = request.getParameter("nomedolivro");
+        String prompt = request.getParameter("prompt");
         BookSearchEngine booksearchengine = new BookSearchEngine(arquivoRepository,autorRepository);
-        Optional<SearchResult> optionalsr = booksearchengine.tituloSearch(nomedolivro);
+        Optional<SearchResult> optionalsr = booksearchengine.acervoSearch(prompt);
         if (optionalsr.isPresent()){
             SearchResult sr = optionalsr.get();
             logger.info("SearchResult is present");

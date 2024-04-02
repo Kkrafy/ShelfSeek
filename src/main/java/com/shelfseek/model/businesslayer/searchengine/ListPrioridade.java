@@ -4,7 +4,6 @@
  */
 package com.shelfseek.model.businesslayer.searchengine;
 
-import com.shelfseek.model.businesslayer.BookOuAutor;
 import java.util.ArrayList;
 
 
@@ -13,11 +12,18 @@ import java.util.ArrayList;
  * @author Mateus Rocha(Kkrafy)
  */
 class ListPrioridade<T> extends ArrayList<T> {
-    final protected Integer prioridade;
+    final protected Float prioridade;
     final protected BookOuAutor bookouautor;
-    ListPrioridade(Integer prioridade,BookOuAutor e){
+    private BookOuSinopse bookousinose;
+    
+    ListPrioridade(Float prioridade,BookOuAutor e){
         this.prioridade = prioridade;
         this.bookouautor = e;        
     }
+    ListPrioridade(Float prioridade,BookOuAutor bookouautor,BookOuSinopse bookousinopse){
+        this.prioridade = prioridade;
+        this.bookouautor = bookouautor;        
+        this.bookousinose = bookousinopse;
+    }    
     
 }

@@ -4,7 +4,6 @@
  */
 package com.shelfseek.model.businesslayer.searchengine;
 
-import com.shelfseek.model.businesslayer.BookOuAutor;
 import com.shelfseek.model.dataacesslayer.entities.Autor;
 import com.shelfseek.model.dataacesslayer.entities.Book;
 import java.util.ArrayList;
@@ -16,20 +15,61 @@ import java.util.Optional;
  * @author Mateus Rocha(Kkrafy)
  */
 
-//TODO:Fazer livros com autor que tem nome na pesquisa terem prioridade
 public class SearchResult {
-    
     List<ListPrioridade<Autor>> listas_autor = new ArrayList<>();
     List<ListPrioridade<Book>> listas_book = new ArrayList<>();
+    List<ListPrioridade<Book>> listas_book_por_sinopse = new ArrayList<>();
     int autormaioratual = 0;
-    int bookmaioratual = 0;
+    float bookmaioratual = 0;
+    int sinopsemaioratual = 0;
     public boolean autor_registrado = false;
     public boolean livro_registrado = false;         
+    String livrosadicionadosdebug = "";
     String jsonfinal = "{\"livros_e_autores\":[";
     
-   void addLivroToJSON(Book b){
+    public String getJSON(){
+        parseLists();
+        System.out.print("Livros Achados:");
+        System.out.println(livrosadicionadosdebug);
+        System.out.println(jsonfinal);
+        return jsonfinal ;
+    }
+    
+    protected void classificar(Book p,int prioridade, int prioridadesinopse){
+        float prioridadefinal = getPrioridadeComposta(p,prioridade);
+        ListPrioridade<Book> list;
+        ListPrioridade<Book> listsinopse;
+        if(prioridadefinal != 0 & prioridadesinopse != 0){System.out.println(prioridadesinopse/9f); prioridadefinal += prioridadesinopse/9f;}
+        if(prioridadefinal != 0){
+            //System.out.println("pfinal != 0");
+            //System.out.println(prioridadesinopse);
+            prioridadesinopse = 0;
+            list = getListBookPrioridade(prioridadefinal,listas_book);        
+            list.add(p);
+            livro_registrado = true;
+        }else if(prioridadesinopse != 0){
+            listsinopse = getListBookPrioridade((float)prioridadesinopse,listas_book_por_sinopse);
+            listsinopse.add(p);
+            livro_registrado = true;
+        }       
+        System.out.print("prioridade do " + p.getTitulo() + ":");
+        System.out.println(prioridadefinal);
+        if(prioridadefinal > bookmaioratual){bookmaioratual = prioridadefinal;}        
+        if(prioridadesinopse > sinopsemaioratual & prioridadefinal == 0){sinopsemaioratual = prioridadesinopse;}
+    }
+    protected void classificar(Autor p,int prioridade){
+        ListPrioridade<Autor> list = getListAutorPrioridade(prioridade);
+        autor_registrado = true;        
+        p.setPrioridade(prioridade);
+        autores.add(p);
+        list.add(p);
+        if(prioridade > autormaioratual){autormaioratual = prioridade;}
+    }
+   
+    void addLivroToJSON(Book b){
         jsonfinal += "{\"livro_ou_autor\":\"livro\",\"isbn\":\""+b.getIsbn()+"\",\"nome\":\""+ b.titulo_bolded + "\", \"sinopse\":\"" + b.getSinopse() + "\",\"autor\":\"" + b.getAutor_nome()+ "\",\"autorid\":\""+b.getAutor()+"\"}";
-   }    
+        livrosadicionadosdebug += " " + b.getTitulo();
+    }    
    void addAutorToJSON(Autor a){
         jsonfinal += "{\"livro_ou_autor\":\"autor\",\"nome\":\""+ a.getNome_bolded()+ "\",\"id\":\"" + a.getId() + "\"}";
     }  
@@ -50,8 +90,8 @@ public class SearchResult {
            }
            return Optional.empty();
     }
-    Optional<ListPrioridade<Book>> essaListBookExiste(Integer prioridade){
-           for(ListPrioridade<Book> list:listas_book){
+    Optional<ListPrioridade<Book>> essaListBookExiste(Float prioridade,List<ListPrioridade<Book>> listadelistas){
+           for(ListPrioridade<Book> list:listadelistas){
                if(list.prioridade.equals(prioridade)){
                    return Optional.of(list);
                }
@@ -59,13 +99,13 @@ public class SearchResult {
            return Optional.empty();
    }
 
-    ListPrioridade<Book> getListBookPrioridade(Integer prioridade){
-        Optional<ListPrioridade<Book>> opcional_list = essaListBookExiste(prioridade);
+    ListPrioridade<Book> getListBookPrioridade(Float prioridade,List<ListPrioridade<Book>> listadelistas){
+        Optional<ListPrioridade<Book>> opcional_list = essaListBookExiste(prioridade,listadelistas);
         if(opcional_list.isPresent()){
             return opcional_list.get();
         }else{
-            ListPrioridade<Book> list = new ListPrioridade<Book>(prioridade,BookOuAutor.AUTOR);
-            listas_book.add(list);
+            ListPrioridade<Book> list = new ListPrioridade<Book>(prioridade,BookOuAutor.BOOK);
+            listadelistas.add(list);
             return list;
         }
     }
@@ -76,7 +116,7 @@ public class SearchResult {
         if(opcional_list.isPresent()){
             return opcional_list.get();
         }else{
-            ListPrioridade<Autor> list = new ListPrioridade<Autor>(prioridade,BookOuAutor.AUTOR);
+            ListPrioridade<Autor> list = new ListPrioridade<Autor>((float)prioridade,BookOuAutor.AUTOR);
             listas_autor.add(list);
             return list;
         }
@@ -86,6 +126,7 @@ public class SearchResult {
        
        updateNaoVazios(listas_book);
        updateNaoVazios(listas_autor);
+       updateNaoVazios(listas_book_por_sinopse);
        
        if(nao_vazios == 1){
            nao_vazios = 0;
@@ -100,6 +141,8 @@ public class SearchResult {
         boolean ultimoloop = false;
         currentloop++;      
         if(lista.size() == currentloop){
+            //System.out.print("ultimoloopvirgulaplacer");
+            //System.out.println(lista.size());
             ultimoloop = true;
         }
        
@@ -127,25 +170,28 @@ public class SearchResult {
    int getPrioridadeComposta(Book b, int prioridade){
        Optional<Autor> optautordob = findAutor(b.getAutor());
        if(!optautordob.isEmpty()){
+           //System.out.println(b.getTitulo() + " é prioridade composta");
            Autor autordob = optautordob.get();
            b.setAutor_nome(autordob.getNome_bolded());
-           return prioridade + autordob.getPrioridade() - 1;
+           return prioridade + autordob.getPrioridade();
        }else{
            return prioridade;
        }
        
    }
-   void loopUmaPrioridadeBook(){
-       ListPrioridade<Book> list = listas_book.get(0);
-       for(Book b :list){
+   void loopUmaPrioridadeBook(List<ListPrioridade<Book>> list,BookOuSinopse bookousinopse){
+       ListPrioridade<Book> listp = list.get(0);
+       for(Book b :listp){
            addLivroToJSON(b);
-           virgulaPlacer(list);
+           virgulaPlacer(listp);
        }
-       listas_book.remove(0);       
-       if(!listas_book.isEmpty()){
-           bookmaioratual = listas_book.get(0).prioridade.intValue();
+       list.remove(0);       
+       if(!list.isEmpty()){
+           if(bookousinopse == BookOuSinopse.BOOK){bookmaioratual = list.get(0).prioridade.intValue();}
+           else{sinopsemaioratual = list.get(0).prioridade.intValue();}
        }else{
-           bookmaioratual = 0;
+           if(bookousinopse == BookOuSinopse.BOOK){bookmaioratual = 0;}
+           else{sinopsemaioratual = 0;}           
        }
    }
    
@@ -175,39 +221,20 @@ public class SearchResult {
        sortLists();
        //System.out.println(autormaioratual);
        //System.out.println(bookmaioratual);       
-       while(bookmaioratual != 0 || autormaioratual != 0){
+       while(bookmaioratual != 0 || autormaioratual != 0 || sinopsemaioratual != 0){
            if(autormaioratual > bookmaioratual){
                loopUmaPrioridadeAutor();       
            }else if(bookmaioratual > autormaioratual){
-               loopUmaPrioridadeBook();                             
-           }else{
-               loopUmaPrioridadeBook();
+               loopUmaPrioridadeBook(listas_book,BookOuSinopse.BOOK);                             
+           }else if(bookmaioratual != 0 || autormaioratual != 0){
+               loopUmaPrioridadeBook(listas_book,BookOuSinopse.BOOK);
                loopUmaPrioridadeAutor();
+           }else{
+               System.out.print("else triggered,sinopsemaioratual:");
+               System.out.println(sinopsemaioratual);
+               loopUmaPrioridadeBook(listas_book_por_sinopse, BookOuSinopse.SINOPSE);
            }
        }         
-   }
-    
-    
-    public String getJSON(){
-        parseLists();
-        System.out.println(jsonfinal);
-        return jsonfinal ;
-    }
-    
-    public void classificar(Book p,int prioridade){
-        int prioridadefinal = getPrioridadeComposta(p,prioridade);
-        ListPrioridade<Book> list = getListBookPrioridade(prioridadefinal);        
-        livro_registrado = true;        
-        list.add(p);
-        if(prioridadefinal > bookmaioratual){bookmaioratual = prioridadefinal;}        
-    }
-    public void classificar(Autor p,int prioridade){
-        ListPrioridade<Autor> list = getListAutorPrioridade(prioridade);
-        autor_registrado = true;        
-        p.setPrioridade(prioridade);
-        autores.add(p);
-        list.add(p);
-        if(prioridade > autormaioratual){autormaioratual = prioridade;}
-    }    
+   }    
 }
 
