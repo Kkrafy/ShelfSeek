@@ -6,18 +6,21 @@ import com.shelfseek.model.dataacesslayer.repository.AutorRepository;
 import com.shelfseek.model.businesslayer.searchengine.BookSearchEngine;
 import com.shelfseek.model.businesslayer.CoverService;
 import com.shelfseek.model.dataacesslayer.entities.Book;
-import com.shelfseek.model.businesslayer.JsonTools;
+import com.shelfseek.model.businesslayer.StaticTools;
 import com.shelfseek.model.businesslayer.searchengine.SearchResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.Normalizer;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -59,24 +62,27 @@ public class ControllerClass {
      */
     @GetMapping("/busca-acervo")
     public void buscaAcervo(HttpServletRequest request, HttpServletResponse response){
-        String prompt = request.getParameter("prompt");
+        String prompt = StaticTools.tirarDiacritics(request.getParameter("prompt"),true);
+        logger.trace(prompt);
         BookSearchEngine booksearchengine = new BookSearchEngine(arquivoRepository,autorRepository);
         Optional<SearchResult> optionalsr = booksearchengine.acervoSearch(prompt);
-        if (optionalsr.isPresent()){
-            SearchResult sr = optionalsr.get();
-            logger.info("SearchResult is present");
-           // logger.debug("{\"nome\":\""+ book.getNome() +"\",\"sinopse\":\"" + book.getSinopse() + "\"}");
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");  
-            String json = sr.getJSON();
-            try{          
-            response.getWriter().write(json);
-            }catch(Exception e){
-                
+        try{
+            if (optionalsr.isPresent()){
+                SearchResult sr = optionalsr.get();
+                logger.info("SearchResult is present");
+                // logger.debug("{\"nome\":\""+ book.getNome() +"\",\"sinopse\":\"" + book.getSinopse() + "\"}");
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");  
+                String json = sr.getJSON();                      
+                response.getWriter().write(json);
             }
-        }
-        else{
-        logger.info("SearchResult is NOT present");
+        
+            else{
+                response.getWriter().write("{\"isPresent\":false}");
+                logger.info("SearchResult is NOT present");
+            }
+        }catch(IOException e){
+            logger.error("IOException no Writer da HTTPResponse no buscarAcervo");
         }
     }
     
@@ -107,7 +113,7 @@ public class ControllerClass {
         System.out.println("autor = " + autorid);
         BookSearchEngine b_engine = new BookSearchEngine(arquivoRepository,autorRepository);
         List<Book> lista = b_engine.autorSearch(autorid);
-        String jsonfinal = JsonTools.bookListToJson(lista);
+        String jsonfinal = StaticTools.bookListToJson(lista);
         try {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("<!DOCTYPE html>\n" +

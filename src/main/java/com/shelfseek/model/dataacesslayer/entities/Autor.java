@@ -4,6 +4,7 @@
  */
 package com.shelfseek.model.dataacesslayer.entities;
 
+import com.shelfseek.model.businesslayer.StaticTools;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
@@ -26,7 +27,10 @@ public class Autor {
     
     @Transient
     private int prioridade;
-
+    
+    public String getNomeNoDiacritics(){
+        return StaticTools.tirarDiacritics(getNome(),false);
+    }
     public String getNome_bolded() {
         return nome_bolded;
     }

@@ -25,7 +25,7 @@ public class SearchResult {
     public boolean autor_registrado = false;
     public boolean livro_registrado = false;         
     String livrosadicionadosdebug = "";
-    String jsonfinal = "{\"livros_e_autores\":[";
+    String jsonfinal = "{\"isPresent\":true,\"livros_e_autores\":[";
     
     public String getJSON(){
         parseLists();

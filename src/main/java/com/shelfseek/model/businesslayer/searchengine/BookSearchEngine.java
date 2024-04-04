@@ -48,7 +48,7 @@ public class BookSearchEngine {
         Iterable<Autor> todosautores = autorRepository.findAll();
         
         for(Autor v_autor:todosautores){            
-            String[] autornomeseparado = v_autor.getNome().split(",");
+            String[] autornomeseparado = v_autor.getNomeNoDiacritics().split(",");
             String[] sobrenomeseparado = autornomeseparado[0].split(" ");  
             String nome_usual = autornomeseparado[1] + " " + autornomeseparado[0];
             
@@ -118,7 +118,7 @@ public class BookSearchEngine {
             int prioridadesinopse;
             prioridade = tituloIteration(b);
             prioridadesinopse = sinopseIteration(b);
-            if(prioridade != 0 || prioridadesinopse != 0){sr.classificar(b, prioridade,prioridadesinopse);System.out.println(b.getSinopse());}
+            if(prioridade != 0 || prioridadesinopse != 0){sr.classificar(b, prioridade,prioridadesinopse);System.out.println(b.getSinopseNoDiacritics());}
         }    
     }
     /**
@@ -130,12 +130,12 @@ public class BookSearchEngine {
             //System.out.println(b.getTitulo());
             String bnomefinal = "";
                              
-            if(b.getTitulo().equals(prompt)){
+            if(b.getTituloNoDiacritics().equals(prompt)){
                 b.setAutor_nome(autorRepository.getNomeAutorById(b.getAutor()));                
                 b.titulo_bolded = "||bold||" + b.getTitulo() + "||bold||";
                 return 5;
             }
-            String bnomeseparado[] = b.getTitulo().split(" ");
+            String bnomeseparado[] = b.getTituloNoDiacritics().split(" ");
             byte palavrasiguais = 0;
             byte currentloop = 0;
             for(String bnome:bnomeseparado){
@@ -178,7 +178,9 @@ public class BookSearchEngine {
      * @return prioridade dada ao livro dada a search de sinopse
      */
     int sinopseIteration(Book b){
-        String sinopseraw = b.getSinopse();
+        String sinopseacentuada = b.getSinopse();
+        String sinopseacentuadaseparada[] = sinopseacentuada.split(" ");
+        String sinopseraw = b.getSinopseNoDiacritics();
         String sinopse = sinopseraw.toUpperCase();
         String[] sinopseseparada = sinopse.split(" ");
         String[] sinopserawseparada = sinopseraw.split(" ");
@@ -203,7 +205,7 @@ public class BookSearchEngine {
             }
             if(equals){
                 currentpalavraprompt++;
-                sinopserawseparada[currentpalavrasinopse] = "||bold||" + sinopserawseparada[currentpalavrasinopse] + "||bold||";
+                sinopseacentuadaseparada[currentpalavrasinopse] = "||bold||" + sinopseacentuadaseparada[currentpalavrasinopse] + "||bold||";
                 System.out.println(sinopserawseparada[currentpalavrasinopse]);
                 if(ultimapalavra){
                     System.out.println("ultimapalavra true");
@@ -218,14 +220,14 @@ public class BookSearchEngine {
         }
         if(prioridadetoreturn != 0){
             int currentsinopseloopdebaixo = 1;
-            sinopseraw = "";
-            for(String s:sinopserawseparada){
+            sinopseacentuada = "";
+            for(String s:sinopseacentuadaseparada){
                 //System.out.println(s);
-                sinopseraw += s;            
-                if(sinopserawseparada.length != currentsinopseloopdebaixo){sinopseraw+=" ";}
+                sinopseacentuada += s;            
+                if(sinopseacentuadaseparada.length != currentsinopseloopdebaixo){sinopseacentuada+=" ";}
                 currentsinopseloopdebaixo++;
             }
-            b.setSinopse(sinopseraw);
+            b.setSinopse(sinopseacentuada);
             //System.out.println(b.getSinopse());
             //System.out.println(prioridadetoreturn);
         }

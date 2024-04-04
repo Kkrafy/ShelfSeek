@@ -63,12 +63,20 @@ async function requestBook(){
    arraylength = nomesplitted.length
    nomesplitted.forEach(formatString)
    prompt = finalstring
-   console.log(prompt)
-   document.getElementById("consultar_form").style.display = "none"
+   console.log(finalstring)
    console.log("URL = busca-acervo?prompt=" + prompt)
    const promisedbinfo = await fetch("busca-acervo?prompt=" + prompt)
    bookjson = await promisedbinfo.json()
-   bookjson.livros_e_autores.forEach(addBooks)
+   if(bookjson.isPresent){
+       bookjson.livros_e_autores.forEach(addBooks)
+       document.getElementById("consultar_form").style.display = "none"       
+   }else{
+       prompt = "";
+       finalstring = "";
+       spacebefore = false
+       firstexecution = true
+       alert("Nenhum livro encontrado ☹️ , verifique se voce escreveu corretamente.")
+   }
 }
 
 

@@ -1,6 +1,7 @@
 
 package com.shelfseek.model.dataacesslayer.entities;
 
+import com.shelfseek.model.businesslayer.StaticTools;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
@@ -44,7 +45,9 @@ public class Book {
     public String getTitulo() {
         return titulo;
     }
-
+    public String getTituloNoDiacritics(){
+        return StaticTools.tirarDiacritics(getTitulo(),true);
+    }    
     public void setNome(String titulo) {
         this.titulo = titulo;
     }
@@ -52,6 +55,9 @@ public class Book {
     public String getSinopse() {
         return sinopse;
     }
+    public String getSinopseNoDiacritics(){
+        return StaticTools.tirarDiacritics(getSinopse(),true);
+    }    
 
     public void setSinopse(String sinopse) {
         this.sinopse = sinopse;
